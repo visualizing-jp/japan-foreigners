@@ -5,7 +5,7 @@
  * 住民基本台帳でみる居住地は japan-data シリーズの foreign-residents が受け持つので、ここでは扱わない。
  */
 
-export type CategoryId = "visit" | "live";
+export type CategoryId = "visit" | "live" | "work";
 
 export type ProjectStatus = "published" | "pending";
 
@@ -23,6 +23,7 @@ export type CatalogEntry = {
 export const CATEGORIES: { id: CategoryId; label: string }[] = [
   { id: "visit", label: "訪れる" },
   { id: "live", label: "住む" },
+  { id: "work", label: "働く" },
 ];
 
 export const CATALOG: CatalogEntry[] = [
@@ -68,5 +69,17 @@ export const CATALOG: CatalogEntry[] = [
     status: "published",
     url: "https://japan-foreigners-status.visualizing.jp/",
     art: "/art/status.svg",
+  },
+
+  // —— 働く ——
+  {
+    slug: "workers",
+    title: "日本で働く外国人は、どこから来たか",
+    source: "厚生労働省 外国人雇用状況",
+    period: "2016–2025",
+    category: "work",
+    status: "published",
+    url: "https://japan-foreigners-workers.visualizing.jp/",
+    art: "/art/workers.svg",
   },
 ];

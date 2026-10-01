@@ -43,7 +43,7 @@ export function App() {
             日本にいる外国人を公的統計でたどるシリーズのハブです。各ページは独立したサイトです。
           </p>
           <p>
-            出典: 日本政府観光局（JNTO）「訪日外客統計」、観光庁、出入国在留管理庁。
+            出典: 日本政府観光局（JNTO）「訪日外客統計」、観光庁、出入国在留管理庁、厚生労働省。
           </p>
           <a
             href={VISUALIZING_URL}
@@ -75,7 +75,7 @@ function SideTitle() {
         どこから来たか
       </h1>
       <p className="vertical pt-32 font-serif text-[15px] leading-[2] tracking-[0.18em] text-muted">
-        訪れる人、住む人。公的統計でたどる。
+        訪れる人、住む人、働く人。公的統計でたどる。
       </p>
       <a
         href={VISUALIZING_URL}
@@ -109,7 +109,7 @@ function MobileTitle() {
         来たか
       </h1>
       <p className="font-serif text-[14px] leading-loose tracking-[0.12em] text-muted">
-        訪れる人、住む人。公的統計でたどる。
+        訪れる人、住む人、働く人。公的統計でたどる。
       </p>
     </header>
   );
