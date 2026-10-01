@@ -12,6 +12,7 @@
 | stays | 訪れた外国人は、どこに泊まってきたか | 観光庁 宿泊旅行統計調査 | 準備中 |
 | status | 日本に住む外国人は、どんな在留資格でいるか | 出入国在留管理庁 在留外国人統計 | 準備中 |
 | workers | 日本で働く外国人は、どこから来たか | 厚生労働省 外国人雇用状況の届出状況 | 実装済み |
+| crime | 日本で検挙された外国人は、どこから来たか | 警察庁 犯罪統計書 | 実装済み |
 
 住民基本台帳でみる外国人住民の居住地は、japan-data シリーズの [japan-data-foreign-residents](https://japan-data-foreign-residents.visualizing.jp/) が受け持つ。
 

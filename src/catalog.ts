@@ -5,7 +5,7 @@
  * 住民基本台帳でみる居住地は japan-data シリーズの foreign-residents が受け持つので、ここでは扱わない。
  */
 
-export type CategoryId = "visit" | "live" | "work";
+export type CategoryId = "visit" | "live" | "work" | "arrest";
 
 export type ProjectStatus = "published" | "pending";
 
@@ -24,6 +24,7 @@ export const CATEGORIES: { id: CategoryId; label: string }[] = [
   { id: "visit", label: "訪れる" },
   { id: "live", label: "住む" },
   { id: "work", label: "働く" },
+  { id: "arrest", label: "検挙" },
 ];
 
 export const CATALOG: CatalogEntry[] = [
@@ -81,5 +82,17 @@ export const CATALOG: CatalogEntry[] = [
     status: "published",
     url: "https://japan-foreigners-workers.visualizing.jp/",
     art: "/art/workers.svg",
+  },
+
+  // —— 検挙 ——
+  {
+    slug: "crime",
+    title: "日本で検挙された外国人は、どこから来たか",
+    source: "警察庁 犯罪統計書",
+    period: "2015–2024",
+    category: "arrest",
+    status: "published",
+    url: "https://japan-foreigners-crime.visualizing.jp/",
+    art: "/art/crime.svg",
   },
 ];
