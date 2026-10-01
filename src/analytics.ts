@@ -2,7 +2,7 @@
  * Google Analytics 4。シリーズ共通プロパティ（シリーズの各サイトと同じ測定ID）。
  */
 
-const MEASUREMENT_ID: string = "G-TQRNG44RDM";
+const MEASUREMENT_ID: string = "G-Y66C2KYCE6";
 
 declare global {
   interface Window {
