@@ -1,4 +1,5 @@
 import { CATALOG, CATEGORIES, type CatalogEntry } from "./catalog.ts";
+import { CardIcon } from "./card-icons.tsx";
 import { VISUALIZING_URL, VisualizingMark } from "./Brand.tsx";
 
 // 領域の番号は大字で振る。数字よりも静かに並ぶ。
@@ -7,6 +8,38 @@ const CATEGORY_NUMERALS = ["壱", "弐", "参", "肆", "伍", "陸"];
 const LINK_TRANSITION =
   "transition-colors duration-150 ease-[var(--ease-out)]";
 
+const CARD_GRID =
+  "grid grid-cols-1 gap-x-8 gap-y-12 min-[30rem]:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 min-[87.5rem]:grid-cols-4";
+
+/** カードが1枚の領域は、続けて同じ行に置く。 */
+function catalogBands() {
+  const bands: (
+    | { key: string; kind: "wide"; index: number; label: string; items: CatalogEntry[] }
+    | { key: string; kind: "row"; cells: { index: number; label: string; entry: CatalogEntry }[] }
+  )[] = [];
+
+  CATEGORIES.forEach((cat, index) => {
+    const items = CATALOG.filter((e) => e.category === cat.id);
+    const only = items.length === 1 ? items[0] : undefined;
+    const open = bands.at(-1);
+    if (only && open?.kind === "row") {
+      open.cells.push({ index, label: cat.label, entry: only });
+      return;
+    }
+    if (only) {
+      bands.push({
+        key: cat.id,
+        kind: "row",
+        cells: [{ index, label: cat.label, entry: only }],
+      });
+      return;
+    }
+    bands.push({ key: cat.id, kind: "wide", index, label: cat.label, items });
+  });
+
+  return bands;
+}
+
 export function App() {
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-[1440px] flex-col gap-14 px-6 pt-14 sm:px-10 lg:flex-row lg:gap-16 lg:px-20 lg:pt-[120px] min-[87.5rem]:gap-20">
@@ -14,29 +47,29 @@ export function App() {
       <MobileTitle />
 
       <main className="flex min-w-0 grow flex-col gap-20 lg:gap-24">
-        {CATEGORIES.map((cat, i) => {
-          const items = CATALOG.filter((e) => e.category === cat.id);
-          return (
-            <section key={cat.id} className="flex flex-col gap-8 lg:gap-10">
-              <h2 className="flex items-baseline gap-6 font-serif">
-                <span className="text-[14px] text-accent" aria-hidden>
-                  {CATEGORY_NUMERALS[i]}
-                </span>
-                <span className="text-[20px] font-medium tracking-[0.3em] lg:text-[22px]">
-                  {cat.label}
-                </span>
-                <span className="h-px grow self-center bg-rule" aria-hidden />
-              </h2>
-              <ul className="grid grid-cols-1 gap-x-8 gap-y-12 min-[30rem]:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 min-[87.5rem]:grid-cols-4">
-                {items.map((entry) => (
+        {catalogBands().map((band) =>
+          band.kind === "wide" ? (
+            <section key={band.key} className="flex flex-col gap-8 lg:gap-10">
+              <CategoryHeading index={band.index} label={band.label} />
+              <ul className={CARD_GRID}>
+                {band.items.map((entry) => (
                   <li key={entry.slug}>
                     <ProjectCard entry={entry} />
                   </li>
                 ))}
               </ul>
             </section>
-          );
-        })}
+          ) : (
+            <ul key={band.key} className={CARD_GRID}>
+              {band.cells.map((cell) => (
+                <li key={cell.entry.slug} className="flex flex-col gap-8 lg:gap-10">
+                  <CategoryHeading index={cell.index} label={cell.label} />
+                  <ProjectCard entry={cell.entry} />
+                </li>
+              ))}
+            </ul>
+          ),
+        )}
 
         <footer className="flex flex-col gap-2 pt-6 pb-24 text-[11px] leading-loose tracking-[0.06em] text-muted">
           <p>
@@ -115,20 +148,28 @@ function MobileTitle() {
   );
 }
 
+function CategoryHeading({ index, label }: { index: number; label: string }) {
+  return (
+    <h2 className="flex items-baseline gap-6 font-serif">
+      <span className="text-[14px] text-accent" aria-hidden>
+        {CATEGORY_NUMERALS[index]}
+      </span>
+      <span className="text-[20px] font-medium tracking-[0.3em] lg:text-[22px]">
+        {label}
+      </span>
+      <span className="h-px grow self-center bg-rule" aria-hidden />
+    </h2>
+  );
+}
+
 function ProjectCard({ entry }: { entry: CatalogEntry }) {
   const pending = entry.status === "pending" || entry.url === null;
   const body = (
     <div className={`flex flex-col gap-4 ${pending ? "opacity-40" : ""}`}>
-      <div className="card-art overflow-hidden">
-        <img
-          src={entry.art}
-          alt=""
-          width={320}
-          height={200}
-          loading="lazy"
-          decoding="async"
-          className="block h-full w-full object-contain transition-transform duration-300 ease-[var(--ease-out)] group-hover:scale-[1.03]"
-        />
+      <div className="card-art flex items-center justify-center overflow-hidden">
+        <span className="transition-transform duration-300 ease-[var(--ease-out)] group-hover:scale-[1.03]">
+          <CardIcon slug={entry.slug} />
+        </span>
       </div>
       <p
         className={`font-serif text-[16px] leading-[1.7] font-medium tracking-[0.04em] ${LINK_TRANSITION} ${

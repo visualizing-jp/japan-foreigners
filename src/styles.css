@@ -67,6 +67,11 @@
   background: var(--color-plate);
 }
 
+.card-mark,
+.card-mark * {
+  vector-effect: non-scaling-stroke;
+}
+
 .vertical {
   writing-mode: vertical-rl;
 }
